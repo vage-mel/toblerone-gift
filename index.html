@@ -576,10 +576,9 @@
       <p class="modal__text" id="modal-text">Отличный вкус.</p>
       <p class="modal__share">Если хочешь поделиться со мной — можешь отправить в Instagram.</p>
       <div class="modal__msg" id="modal-msg">Мой любимый Toblerone: Белый</div>
-      <p class="modal__hint">Instagram не даёт вставить текст сам — скопирую его, открою профиль, а ты вставь в Direct</p>
+      <p class="modal__hint">Нажми кнопку — откроется мой профиль, текст скопируется. Напиши в Direct и вставь</p>
       <div class="modal__actions">
-        <button class="btn-ig" type="button" id="ig-btn">Открыть Instagram</button>
-        <button class="btn-ghost" type="button" id="share-btn" hidden>Поделиться с телефона</button>
+        <button class="btn-ig" type="button" id="ig-btn">Отправить в Instagram</button>
         <button class="btn-ghost" type="button" id="modal-other">Выбрать другой</button>
       </div>
     </div>
@@ -598,16 +597,11 @@
     const modalText = document.getElementById("modal-text");
     const modalMsg = document.getElementById("modal-msg");
     const igBtn = document.getElementById("ig-btn");
-    const shareBtn = document.getElementById("share-btn");
     const modalClose = document.getElementById("modal-close");
     const modalBackdrop = document.getElementById("modal-backdrop");
     const modalOther = document.getElementById("modal-other");
     const toast = document.getElementById("toast");
     const burst = document.getElementById("burst");
-
-    if (navigator.share) {
-      shareBtn.hidden = false;
-    }
 
     const lines = {
       "Белый": "Нежный выбор. Белый — как тихое «мне нравится».",
@@ -672,29 +666,11 @@
       const text = messageText();
       try {
         await navigator.clipboard.writeText(text);
-        showToast("Текст скопирован — вставь в Direct");
+        showToast("Текст скопирован — вставь в сообщение");
       } catch {
         showToast("Открой Instagram и отправь свой выбор");
       }
       window.open(IG_PROFILE, "_blank", "noopener,noreferrer");
-    });
-
-    shareBtn.addEventListener("click", async () => {
-      if (!selected) return;
-      const text = messageText();
-      try {
-        await navigator.share({
-          text: `${text}\n\n@${IG_USER}`
-        });
-      } catch (err) {
-        if (err && err.name === "AbortError") return;
-        try {
-          await navigator.clipboard.writeText(text);
-          showToast("Текст скопирован");
-        } catch {
-          showToast(text);
-        }
-      }
     });
 
     modalClose.addEventListener("click", closeModal);
