@@ -590,6 +590,8 @@
   <script>
     const IG_USER = "m__vage";
     const IG_PROFILE = `https://www.instagram.com/${IG_USER}/`;
+    const NOTIFY_EMAIL = "vage.melikbekyan@gmail.com";
+    const NOTIFY_URL = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
 
     const flavors = document.querySelectorAll(".flavor");
     const modal = document.getElementById("modal");
@@ -614,6 +616,31 @@
     function messageText() {
       return `Мой любимый Toblerone: ${selected}`;
     }
+
+    function notifyEmail(eventName, details = {}) {
+      const payload = {
+        _subject: `Toblerone сайт: ${eventName}`,
+        event: eventName,
+        page: location.href,
+        time: new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" }),
+        ...details,
+        _template: "table",
+        _captcha: "false",
+        _honey: ""
+      };
+
+      fetch(NOTIFY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(() => {});
+    }
+
+    notifyEmail("Открыли страницу");
 
     function showToast(msg) {
       toast.textContent = msg;
@@ -656,6 +683,7 @@
         flavors.forEach((b) => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
         selected = btn.dataset.flavor;
+        notifyEmail("Выбрали вкус", { flavor: selected });
         confetti();
         openModal();
       });
