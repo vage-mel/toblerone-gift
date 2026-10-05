@@ -23,7 +23,11 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      max-width: 100%;
+    }
 
     body {
       font-family: "Sora", system-ui, sans-serif;
@@ -31,7 +35,11 @@
       background: var(--snow);
       line-height: 1.5;
       overflow-x: hidden;
+      max-width: 100%;
+      position: relative;
     }
+
+    img { max-width: 100%; height: auto; }
 
     /* —— Hero: one composition —— */
     .hero {
@@ -44,6 +52,8 @@
       padding: clamp(1.25rem, 4vw, 2.5rem);
       color: var(--ink);
       isolation: isolate;
+      overflow: hidden;
+      max-width: 100%;
     }
 
     .hero__bg {
@@ -84,26 +94,53 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(0.2rem, 1vw, 0.75rem);
-      width: min(96vw, 980px);
+      gap: clamp(0.15rem, 1vw, 0.75rem);
+      width: 100%;
+      max-width: 100%;
       margin-top: auto;
+      padding-inline: 0.15rem;
       pointer-events: none;
       opacity: 0;
       animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
+      overflow: hidden;
     }
 
     .hero__packs img {
-      width: auto;
-      height: clamp(140px, 34vh, 260px);
-      max-width: 36%;
+      flex: 1 1 0;
+      width: 0;
+      min-width: 0;
+      height: auto;
+      max-height: clamp(110px, 28vh, 260px);
       object-fit: contain;
       filter: drop-shadow(0 22px 34px rgba(20, 32, 51, 0.22));
       transform-origin: center bottom;
     }
 
-    .hero__packs img:nth-child(1) { transform: rotate(-5deg) translateY(6px); }
-    .hero__packs img:nth-child(2) { transform: rotate(1deg) translateY(-10px) scale(1.06); z-index: 1; }
-    .hero__packs img:nth-child(3) { transform: rotate(6deg) translateY(5px); }
+    .hero__packs img:nth-child(1) { transform: rotate(-4deg) translateY(4px); }
+    .hero__packs img:nth-child(2) { transform: rotate(1deg) translateY(-6px) scale(1.04); z-index: 1; }
+    .hero__packs img:nth-child(3) { transform: rotate(4deg) translateY(4px); }
+
+    @media (max-width: 640px) {
+      .hero__packs img:nth-child(1),
+      .hero__packs img:nth-child(2),
+      .hero__packs img:nth-child(3) {
+        transform: none;
+      }
+
+      .hero__packs img:nth-child(2) {
+        transform: translateY(-4px);
+        z-index: 1;
+      }
+
+      .brand {
+        font-size: clamp(2.6rem, 14vw, 3.6rem);
+        max-width: 100%;
+      }
+
+      .hero__copy {
+        max-width: 100%;
+      }
+    }
 
     .hero__grain {
       position: absolute;
@@ -191,6 +228,7 @@
       padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 2.5rem) 5rem;
       max-width: 980px;
       margin: 0 auto;
+      overflow-x: hidden;
     }
 
     .vote__intro {
@@ -263,7 +301,7 @@
     .flavor.is-selected {
       border-color: var(--accent);
       box-shadow: 0 18px 44px rgba(20, 32, 51, 0.14);
-      transform: translateY(-4px) scale(1.015);
+      transform: translateY(-3px);
     }
 
     .flavor--white {
